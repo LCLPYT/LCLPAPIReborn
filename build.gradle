@@ -96,6 +96,50 @@ bukkit {
         get {
             description = "Get players items."
         }
+
+        chest {
+            description = 'Opens a players enderchest'
+        }
+        feed {
+            description = 'Feeds a player.'
+        }
+
+        fly {
+            description = 'Sets Fly mode'
+        }
+
+        heal {
+            description = 'Heals a player.'
+        }
+
+        inv {
+            description = 'Opens a players inventory.'
+        }
+
+        ping {
+            description = 'Ping command'
+        }
+
+        die {
+            description = 'Forces kill'
+        }
+
+        world {
+            description = 'worlds'
+        }
+
+        speed {
+            description = 'Sets a players walk or fly speed'
+        }
+
+        resourcepack {
+            description = 'Makes a resourcepack request for a player'
+            aliases = ['rp']
+        }
+
+        sudo {
+            description = 'Executes as a player.'
+        }
     }
 }
 
