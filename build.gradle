@@ -1,0 +1,144 @@
+import java.nio.charset.StandardCharsets
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'gradle-build-utils'
+    id 'io.papermc.paperweight.userdev' version '1.3.6'  // provide paper, spigot and craftbukkit
+    id 'xyz.jpenilla.run-paper' version '1.0.6'  // provide runServer and runMojangMappedServer tasks
+    id 'net.minecrell.plugin-yml.bukkit' version "0.5.1"  // generates plugin.yml
+}
+
+Properties props = loadProperties.call('publish.properties')
+
+archivesBaseName = project.archives_base_name
+version = gitVersion.call()
+group = project.maven_group
+description = 'General purpose library and preset plugin for PaperMC.'
+
+repositories {
+    mavenCentral()
+
+    maven {
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+
+    maven {
+        url = "https://repo.lclpnet.work/repository/internal"
+    }
+
+    maven {
+        url = 'https://repo.lclpnet.work/repository/snapshots'
+    }
+
+    if (!Arrays.stream("mavenHost", "mavenUser", "mavenPassword").allMatch(props.&containsKey))
+        throw new IllegalStateException("You must provide 'mavenHost', 'mavenUser' and 'mavenPassword' in publish.properties")
+
+    maven {
+        credentials {
+            username props.getProperty('mavenUser')
+            password props.getProperty('mavenPassword')
+        }
+        url props.getProperty('mavenHost')
+    }
+
+    mavenLocal()
+}
+
+dependencies {
+    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:1.18.2-R0.1-SNAPSHOT")
+
+    implementation 'commons-io:commons-io:2.11.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+java {
+    withSourcesJar()
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
+tasks {
+    assemble {
+        dependsOn(reobfJar)
+    }
+
+    compileJava {
+        options.encoding = StandardCharsets.UTF_8.name()
+        options.release.set(17)
+    }
+    javadoc {
+        options.encoding = StandardCharsets.UTF_8.name()
+    }
+    processResources {
+        filteringCharset = StandardCharsets.UTF_8.name()
+    }
+}
+
+bukkit {
+    main = "de.lukascrafterlp.api.LCLPAPI"
+    name = "LCLPAPI"
+    apiVersion = "1.18"
+    authors = ["LCLP"]
+    load = BukkitPluginDescription.PluginLoadOrder.STARTUP
+
+    commands {
+        setammo {
+            description = "Set the amount of ammo for a player"
+        }
+
+        get {
+            description = "Get players items."
+        }
+    }
+}
+
+jar {
+    from("LICENSE.md") {
+        rename { "${it}_${project.archivesBaseName}"}
+    }
+}
+
+// configure the maven publication
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = project.archives_base_name
+
+            from components.java
+
+            pom {
+                name = 'LCLPAPI'
+                description = project.description
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            def env = System.getenv()
+            if (Arrays.stream("DEPLOY_URL", "DEPLOY_USER", "DEPLOY_PASSWORD").allMatch(env.&containsKey)) {
+                credentials {
+                    username env.get("DEPLOY_USER")
+                    password env.get("DEPLOY_PASSWORD")
+                }
+                url env.get("DEPLOY_URL")
+            }
+            else if (Arrays.stream("mavenHost", "mavenUser", "mavenPassword").allMatch(props.&containsKey)) {
+                credentials {
+                    username props.getProperty('mavenUser')
+                    password props.getProperty('mavenPassword')
+                }
+                url props.getProperty('mavenHost')
+            } else {
+                url "file:///${project.projectDir}/repo"
+            }
+        }
+    }
+}
