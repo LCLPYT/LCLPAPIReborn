@@ -19,6 +19,7 @@ build
 libs
 publish.properties
 repo
+run
 
 # other
 eclipse

@@ -97,5 +97,21 @@ public class PlayerSessionData implements Listener {
         public void set(UUID uuid, @Nullable T value) {
             setData(this.id, uuid, value);
         }
+
+        public void remove(Player p) {
+            remove(p.getUniqueId());
+        }
+
+        public void remove(UUID uuid) {
+            set(uuid, null);
+        }
+
+        public boolean has(Player p) {
+            return has(p.getUniqueId());
+        }
+
+        public boolean has(UUID uuid) {
+            return get(uuid).isPresent();
+        }
     }
 }
