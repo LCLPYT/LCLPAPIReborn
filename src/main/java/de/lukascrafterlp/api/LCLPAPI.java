@@ -20,6 +20,10 @@ public class LCLPAPI extends MCPlugin {
         plugin = this;
     }
 
+    public static LCLPAPI getPlugin() {
+        return plugin;
+    }
+
     @Override
     public void onLoad() {
         // load configs
@@ -42,9 +46,5 @@ public class LCLPAPI extends MCPlugin {
 
         // commands
         command("resourcepack", CommandResourcepack::new);
-    }
-
-    public static LCLPAPI getPlugin() {
-        return plugin;
     }
 }

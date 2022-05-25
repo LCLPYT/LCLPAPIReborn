@@ -6,23 +6,11 @@ import java.util.concurrent.CompletableFuture;
 
 public class Config {
 
-    public final Gameplay gameplay = new Gameplay();
-
-    public static class Gameplay {
-        public boolean noTrample = false,
-                pads = false,
-                elevator = false,
-                plates = false,
-                noFallPads = true;
-
-        public float plateUpBoost = 1F,
-                plateMultiplier = 2F;
-    }
+    public static final String CONFIG_NAME = "lclpapi";
+    private static Config config = null;
 
     // IO logic
-
-    private static Config config = null;
-    public static final String CONFIG_NAME = "lclpapi";
+    public final Gameplay gameplay = new Gameplay();
 
     public static CompletableFuture<Void> load() {
         return ConfigHelper.load(CONFIG_NAME, Config.class, Config::new).thenAccept(conf -> {
@@ -39,9 +27,20 @@ public class Config {
         // implement behaviour here
     }
 
-    /* - */
-
     public static boolean isNoTrample() {
         return config.gameplay.noTrample;
+    }
+
+    /* - */
+
+    public static class Gameplay {
+        public boolean noTrample = false,
+                pads = false,
+                elevator = false,
+                plates = false,
+                noFallPads = true;
+
+        public float plateUpBoost = 1F,
+                plateMultiplier = 2F;
     }
 }

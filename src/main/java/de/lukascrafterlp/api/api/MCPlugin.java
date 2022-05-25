@@ -13,7 +13,8 @@ public class MCPlugin extends JavaPlugin {
 
     protected void command(String name, Function<String, CommandExecutor> factory) {
         final PluginCommand command = getCommand(name);
-        if (command == null) throw new IllegalStateException("Plugin command '%s' was not registered in plugin.yml".formatted(name));
+        if (command == null)
+            throw new IllegalStateException("Plugin command '%s' was not registered in plugin.yml".formatted(name));
 
         command.setExecutor(factory.apply(name));
     }

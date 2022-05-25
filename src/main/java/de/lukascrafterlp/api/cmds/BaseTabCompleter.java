@@ -18,7 +18,7 @@ public interface BaseTabCompleter extends TabCompleter {
     @Nullable
     default List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!command.getName().equals(getName())) return null;
-        return tabComplete(sender ,command, label, args);
+        return tabComplete(sender, command, label, args);
     }
 
     @Nullable

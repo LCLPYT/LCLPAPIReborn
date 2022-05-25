@@ -32,8 +32,8 @@ public class PlayerSessionData implements Listener {
      * Registers a new data type which serves as a comfortability layer to access session data.
      *
      * @param typeFactory Specifies a factory that will be used to create the data type object.
-     * @param <T> The data type of the stored data.
-     * @param <U> The class of the newly created DataType class.
+     * @param <T>         The data type of the stored data.
+     * @param <U>         The class of the newly created DataType class.
      * @return The newly created DataType class.
      */
     public static <T, U extends DataType<T>> DataType<T> createDataType(Function<Integer, U> typeFactory) {
@@ -44,6 +44,7 @@ public class PlayerSessionData implements Listener {
     /**
      * Gets a unique container id which can be used to access session data.
      * An id corresponds to a set of data, saved in the session data map.
+     *
      * @return A unique container id.
      */
     public static int getUniqueDataTypeId() {

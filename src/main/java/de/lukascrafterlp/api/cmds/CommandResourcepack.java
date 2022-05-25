@@ -3,7 +3,6 @@ package de.lukascrafterlp.api.cmds;
 import de.lukascrafterlp.api.LCLPAPI;
 import de.lukascrafterlp.api.resource.ResourcepackManager;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

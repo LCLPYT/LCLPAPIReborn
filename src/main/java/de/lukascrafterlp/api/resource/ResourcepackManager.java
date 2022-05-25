@@ -15,21 +15,15 @@ import java.util.concurrent.CompletableFuture;
 
 public class ResourcepackManager {
 
-    @Nullable
-    private final Map<String, Pack> resourcepacks = new HashMap<>();
-
-    @Override
-    public String toString() {
-        return "ResourcepackManager{resourcepacks=%s}".formatted(resourcepacks);
-    }
-
-    /* static */
-
     private static final String CONFIG_NAME = "resourcepacks";
     private static final PlayerSessionData.DataType<String> REQUESTING = PlayerSessionData.createDataType();
+
+    /* static */
     private static final PlayerSessionData.DataType<String> INSTALLED = PlayerSessionData.createDataType();
     @Nullable
     private static ResourcepackManager INSTANCE = null;
+    @Nullable
+    private final Map<String, Pack> resourcepacks = new HashMap<>();
 
     public static CompletableFuture<Void> load() {
         return ConfigHelper.load(CONFIG_NAME, ResourcepackManager.class, ResourcepackManager::new)
@@ -101,8 +95,13 @@ public class ResourcepackManager {
 
     public static void setInstalledIfCustom(Player p) {
         String requested = getRequested(p);
-        if(requested != null)
+        if (requested != null)
             INSTALLED.set(p, requested);
+    }
+
+    @Override
+    public String toString() {
+        return "ResourcepackManager{resourcepacks=%s}".formatted(resourcepacks);
     }
 
     public static class Listener implements org.bukkit.event.Listener {
