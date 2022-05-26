@@ -7,7 +7,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class MCPlugin extends JavaPlugin {
 
@@ -19,7 +18,7 @@ public class MCPlugin extends JavaPlugin {
         command.setExecutor(factory.apply(name));
     }
 
-    protected void listen(Supplier<? extends Listener> supplier) {
-        Bukkit.getPluginManager().registerEvents(supplier.get(), this);
+    protected void listen(Listener listener) {
+        Bukkit.getPluginManager().registerEvents(listener, this);
     }
 }
