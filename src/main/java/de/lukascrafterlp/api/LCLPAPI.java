@@ -2,6 +2,7 @@ package de.lukascrafterlp.api;
 
 import de.lukascrafterlp.api.api.MCPlugin;
 import de.lukascrafterlp.api.cmds.CommandResourcepack;
+import de.lukascrafterlp.api.events.BlockListener;
 import de.lukascrafterlp.api.events.EntityListener;
 import de.lukascrafterlp.api.events.PlayerListener;
 import de.lukascrafterlp.api.resource.ResourcepackManager;
@@ -43,6 +44,7 @@ public class LCLPAPI extends MCPlugin {
         listen(new ResourcepackManager.Listener());
         listen(new PlayerListener());
         listen(new EntityListener());
+        listen(new BlockListener());
 
         ResourcepackManager.load().exceptionally(ex -> {
             LOGGER.error("Could not load config", ex);
