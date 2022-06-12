@@ -3,10 +3,8 @@ package de.lukascrafterlp.api.cmds;
 import de.lukascrafterlp.api.LCLPAPI;
 import de.lukascrafterlp.api.resource.ResourcepackManager;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,19 +30,16 @@ public class CommandResourcepack extends BaseCommand implements BaseTabCompleter
             return true;
         }
         if (args.length == 1) {
-            if (!(sender instanceof Player p)) throw CommandException.NOT_A_PLAYER;
-
+            var p = requirePlayer(sender);
             var url = getPack(args[0], p);
+
             ResourcepackManager.sendResourcepackRequest(p, url);
             return true;
         }
         if (args.length == 2) {
-            if (!sender.isOp())
-                throw CommandException.NO_PERMISSION;
+            requireOp(sender);
 
-            Player p = Bukkit.getPlayer(args[1]);
-            if (p == null) throw CommandException.NOT_ONLINE;
-
+            var p = Arguments.getPlayer(args[1]);
             var pack = getPack(args[0], p);
 
             ResourcepackManager.sendResourcepackRequest(p, pack);

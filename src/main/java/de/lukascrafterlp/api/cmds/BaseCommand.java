@@ -4,8 +4,10 @@ import de.lukascrafterlp.api.LCLPAPI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nonnull;
 import java.util.Objects;
 
 public abstract class BaseCommand implements CommandExecutor {
@@ -36,5 +38,15 @@ public abstract class BaseCommand implements CommandExecutor {
 
     protected void usage(String explanation) {
         throw new CommandException("Usage: /%s %s".formatted(name, explanation));
+    }
+
+    protected void requireOp(CommandSender sender) {
+        if (!sender.isOp()) throw CommandException.NO_PERMISSION;
+    }
+
+    @Nonnull
+    protected Player requirePlayer(CommandSender sender) {
+        if (!(sender instanceof Player p)) throw CommandException.NOT_A_PLAYER;
+        return p;
     }
 }

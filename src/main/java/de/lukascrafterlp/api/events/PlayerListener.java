@@ -12,6 +12,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         JoinHook.EVENT.invoker().onJoin(e.getPlayer());
+        
     }
 
     @EventHandler
